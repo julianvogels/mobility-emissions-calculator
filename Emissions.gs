@@ -28,6 +28,7 @@ const TransportMode = {
     carMedium: "carMedium",
     carLarge: "carLarge",
     coach: "coach",
+    minibus: "minibus",
     truck18: "truck18",
     truck40: "truck40"
 }
@@ -57,7 +58,9 @@ function EMISSION_TEST() {
     Logger.log(EMISSION("flight", 701.23));
     Logger.log(EMISSION("carLarge", 701.23, "petrol"));
     Logger.log(EMISSION("truck40", 701.23, "diesel", 3));
+    Logger.log(EMISSION("minibus", 100, "electric"));
 }
+
 function EMISSION(transportMode, distance, drive, weight) {
     return emissionForTransportModeAndDistance(transportMode, distance, drive, weight);
 }
@@ -148,7 +151,7 @@ function getEmissionFactor(transportMode, distance, drive, weight) {
                 case "hydrogen":
                     return Uba.CarMediumHydrogen
                 default:
-                    throw "Invalid car drive"
+                    throw "An emission factor for this car drive is not available"
             }
         case TransportMode.carLarge:
             switch (drive) {
@@ -165,10 +168,23 @@ function getEmissionFactor(transportMode, distance, drive, weight) {
                 case "hydrogen":
                     return Uba.CarLargeHydrogen
                 default:
-                    throw "Invalid car drive"
+                    throw "An emission factor for this car drive is not available"
             }
         case TransportMode.coach:
             return Uba.Coach;
+        case TransportMode.minibus: 
+            switch (drive) {
+                case "diesel":
+                  return Cgt.MinibusDiesel
+                case "naturalGas":
+                  return Cgt.MinibusLpg
+                case "electric":
+                case "petrol":
+                case "phev":
+                case "hydrogen":
+                default:
+                    throw "An emission factor for this minibus drive is not available"
+            }
         case TransportMode.truck40:
             if (weight !== undefined) {
                 // We don't adjust the value by -5% because Google Maps distances are planned distances, not actual distances.
@@ -184,7 +200,7 @@ function getEmissionFactor(transportMode, distance, drive, weight) {
                 return Uba.HeavyDutyVehicle
             }
         default:
-            throw "Invalid transport mode";
+            throw "An emission factor for this transport mode is not available";
     }
 }
 
