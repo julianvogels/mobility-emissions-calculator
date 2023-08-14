@@ -22,9 +22,13 @@
 function DISTANCE_TEST() {
     // Simple route
     Logger.log("=== Flight ===")
-    Logger.log(ROUTE("BER", "HKG", "plane"));
+    Logger.log(DISTANCE("BER", "HKG", "plane"));
     Logger.log("=== Train ===")
-    Logger.log(ROUTE("Berlin", "Hamburg", "trainLongDistance"));
+    Logger.log(DISTANCE("Berlin", "Hamburg", "trainLongDistance"));
+    Logger.log("=== Car ===")
+    Logger.log(DISTANCE("Köln", "Berlin", "carMedium"));
+    Logger.log("=== Motorbike ===")
+    Logger.log(DISTANCE("Köln", "Berlin", "motorbike"));
 }
 
 function DISTANCE(origin, destination, mode) {
@@ -67,11 +71,14 @@ function DISTANCE(origin, destination, mode) {
     switch (directionMode) {
         case "train":
             distance = GOOGLEMAPS_DISTANCE(origin, destination, directionMode)
+            break;
         case "car":
         case "walking":
             distance = GOOGLEMAPS_DISTANCE(origin, destination, directionMode)
+            break;
         case "flight":
             distance = AIRPORT_DISTANCE(origin, destination)
+            break;
         default:
             break;
     }
