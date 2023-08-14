@@ -44,8 +44,8 @@ function DISTANCE(origin, destination, mode) {
 
     switch (mode) {
         case "trainLongDistance":
-        case "trainLocal":
-        case "publicTransportLocal":
+        case "trainRegional":
+        case "trainUrban":
             directionMode = "train"
             break;
         case "car":

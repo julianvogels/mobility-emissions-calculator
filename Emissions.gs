@@ -23,12 +23,13 @@
 const TransportMode = {
     flight: "flight",
     trainLongDistance: "trainLongDistance",
-    trainLocal: "trainLocal",
-    publicTransportLocal: "publicTransportLocal",
+    trainRegional: "trainRegional",
+    trainUrban: "trainUrban",
     carMedium: "carMedium",
     carLarge: "carLarge",
     coach: "coach",
     minibus: "minibus",
+    motorbike: "motorbike",
     truck18: "truck18",
     truck40: "truck40"
 }
@@ -132,10 +133,10 @@ function getEmissionFactor(transportMode, distance, drive, weight) {
             }
         case TransportMode.trainLongDistance:
             return Uba.TrainLongDistanceElectric;
-        case TransportMode.trainLocal:
-            return Uba.TrainLocalElectric;
-        case TransportMode.publicTransportLocal:
-            return Uba.PublicTransportLocal;
+        case TransportMode.trainRegional:
+            return Uba.TrainRegionalElectric;
+        case TransportMode.trainUrban:
+            return Uba.trainUrban;
         case TransportMode.carMedium:
             switch (drive) {
                 case "petrol":
@@ -185,6 +186,8 @@ function getEmissionFactor(transportMode, distance, drive, weight) {
                 default:
                     throw "An emission factor for this minibus drive is not available"
             }
+        case TransportMode.motorbike: 
+            return Uba.MotorBike
         case TransportMode.truck40:
             if (weight !== undefined) {
                 // We don't adjust the value by -5% because Google Maps distances are planned distances, not actual distances.
